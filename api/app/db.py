@@ -1,5 +1,7 @@
-import databases
-import sqlalchemy
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from databases import Database
+
 
 DATABASE = 'postgresql'
 USER = 'postgres'
@@ -11,11 +13,10 @@ DB_NAME = 'document_db'
 DATABASE_URL = '{}://{}:{}@{}:{}/{}'.format(
     DATABASE, USER, PASSWORD, HOST, PORT, DB_NAME)
 
-# databases
-database = databases.Database(DATABASE_URL, min_size=5, max_size=20)
+database = Database(DATABASE_URL, min_size=5, max_size=20)
+
+Base = declarative_base()
+metadata = Base.metadata
 
 ECHO_LOG = False
-
-engine = sqlalchemy.create_engine(DATABASE_URL, echo=ECHO_LOG)
-
-metadata = sqlalchemy.MetaData()
+engine = create_engine(DATABASE_URL, echo=ECHO_LOG)
