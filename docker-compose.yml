@@ -26,6 +26,8 @@ services:
     build: ./api/build/
     ports:
       - 8000:8000
+    depends_on: 
+      - db
     volumes:
       - type: bind
         source: /mnt/c/Users/Public/GitHub/minutes/api/app
