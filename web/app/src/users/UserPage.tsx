@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, TextField, Button } from '@material-ui/core';
-import { Create, Delete } from '@material-ui/icons';
+import { Create, Update, Delete } from '@material-ui/icons';
 import { DataGrid, GridColDef, GridRowSelectedParams } from '@material-ui/data-grid';
 
 import User from './User';
@@ -19,6 +19,7 @@ class UserPage extends React.Component<{}, {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
   }
 
   render() {
@@ -47,6 +48,12 @@ class UserPage extends React.Component<{}, {
           onClick={(e) => this.handleDelete(this.state.input, e)}
         > DELETE </Button>
 
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<Update />}
+          onClick={(e) => this.handleUpdate(this.state.input, e)}
+        > UPDATE </Button>
       </div>
     );
   }
@@ -137,6 +144,25 @@ class UserPage extends React.Component<{}, {
       })
       .catch((data: any) => {
         console.log(data)
+      });
+  }
+
+  handleUpdate(user: User, e: { preventDefault: () => void; }) {
+    e.preventDefault();
+    const userJson = JSON.stringify(user);
+    this.axios.post('/users/update', userJson)
+      .then(() => {
+        const list = this.state.list.slice();
+        const index = list.findIndex(elem => elem["id"] === user.id);
+        list.splice(index, 1, user);
+
+        this.setState({
+          list: list,
+          input: new User(),
+        });
+      })
+      .catch((data: any) => {
+        console.log(data);
       });
   }
 
