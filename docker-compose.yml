@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  db:
+    # PostgreSQL
+    container_name: "db"
+    image: postgres:13.2-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: p@ssw0rd
+      POSTGRES_DB: document_db
+      LANG: ja_JP.UTF-8
+    # volumes:
+    #   - type: bind
+    #     source: /mnt/c/Users/Public/GitHub/minutes/db/data
+    #     target: /data
+    #   - type: bind
+    #     source: /mnt/c/Users/Public/GitHub/minutes/db/docker-entrypoint-initdb.d
+    #     target: /docker-entrypoint-initdb.d
+
+  api:
+    # FastAPI
+    container_name: "api"
+    build: ./api/build/
+    ports:
+      - 8000:8000
+    volumes:
+      - type: bind
+        source: /mnt/c/Users/Public/GitHub/minutes/api/app
+        target: /app
+    command: "uvicorn main:app --reload --host 0.0.0.0"
