@@ -10,6 +10,7 @@ class UserCreate(BaseModel):
     mail: str
     password: str
     is_active: bool
+    position_id: int
 
 
 class UserSelect(BaseModel):
@@ -21,6 +22,7 @@ class UserSelect(BaseModel):
     name: str
     mail: str
     is_active: bool
+    position_id: int
 
 
 class UserUpdate(BaseModel):
@@ -32,6 +34,7 @@ class UserUpdate(BaseModel):
     mail: str
     password: str
     is_active: bool
+    position_id: int
 
 
 class UserDelete(BaseModel):
@@ -42,3 +45,4 @@ class UserDelete(BaseModel):
     # name: str
     # mail: str
     # is_active: bool
+    # position_id: int
