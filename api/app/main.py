@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from db import database
-from users.router import router as userrouter
+from users.router import router as users_router
 from starlette.requests import Request
 
 app = FastAPI()
@@ -27,7 +27,7 @@ async def shutdown():
     await database.disconnect()
 
 # users routerを登録する。
-app.include_router(userrouter)
+app.include_router(users_router)
 
 
 @app.middleware("http")

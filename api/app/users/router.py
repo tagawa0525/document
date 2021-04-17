@@ -1,3 +1,5 @@
+from utils.dbutils import get_connection
+from databases import Database
 import hashlib
 
 from fastapi import APIRouter, Depends
@@ -5,11 +7,8 @@ from typing import List
 from starlette.requests import Request
 
 from .models import users
-from .schemas import UserCreate, UserUpdate, UserDelete, UserSelect
-
-from databases import Database
-
-from utils.dbutils import get_connection
+from .schemas import UserCreate, UserUpdate, \
+    UserDelete, UserSelect
 
 router = APIRouter()
 
@@ -20,7 +19,7 @@ async def users_create(
     database: Database = Depends(get_connection)
 ):
     """
-    usersを新規登録する
+    社員を新規登録する
     """
     # validatorは省略
     query = users.insert()
@@ -35,7 +34,7 @@ async def users_findall(
     database: Database = Depends(get_connection)
 ):
     """
-    usersを全件検索して「UserSelect」のリストをjsonにして返す
+    社員を全件検索して「UserSelect」のリストをjsonにして返す
     """
     query = users.select()
     return await database.fetch_all(query)
@@ -47,7 +46,7 @@ async def users_findone(
     database: Database = Depends(get_connection)
 ):
     """
-    usersをidで検索して「UserSelect」をjsonにして返す
+    社員をidで検索して「UserSelect」をjsonにして返す
     """
     query = users.select().where(users.columns.id == id)
     return await database.fetch_one(query)
@@ -59,7 +58,7 @@ async def users_update(
     Database = Depends(get_connection)
 ):
     """
-    usersを更新する
+    社員を更新する
     """
     # validatorは省略
     query = users.update().where(users.columns.id == user.id)
@@ -74,7 +73,7 @@ async def users_delete(
     database: Database = Depends(get_connection)
 ):
     """
-    usersを削除する
+    社員を削除する
     """
     print(user)
     query = users.delete().where(users.columns.id == user.id)

@@ -1,14 +1,16 @@
-import sqlalchemy
-from db import metadata, engine
+from sqlalchemy import Column, Integer, String, Boolean
 
-users = sqlalchemy.Table(
-    "users",
-    metadata,
-    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True, index=True),
-    sqlalchemy.Column("name", sqlalchemy.String, index=True),
-    sqlalchemy.Column("mail", sqlalchemy.String, index=True),
-    sqlalchemy.Column("hashed_password", sqlalchemy.String),
-    sqlalchemy.Column("is_active", sqlalchemy.Boolean(), default=True),
-)
+from db import Base, metadata, engine
+
+
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    mail = Column(String, index=True)
+    hashed_password = Column(String)
+    is_active = Column(Boolean, default=True)
+
 
 metadata.create_all(bind=engine)
+users = User.__table__

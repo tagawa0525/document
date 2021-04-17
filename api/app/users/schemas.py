@@ -10,7 +10,6 @@ class UserCreate(BaseModel):
     mail: str
     password: str
     is_active: bool
-    is_superuser: bool
 
 
 class UserSelect(BaseModel):
@@ -22,7 +21,6 @@ class UserSelect(BaseModel):
     name: str
     mail: str
     is_active: bool
-    is_superuser: bool
 
 
 class UserUpdate(BaseModel):
@@ -34,7 +32,6 @@ class UserUpdate(BaseModel):
     mail: str
     password: str
     is_active: bool
-    is_superuser: bool
 
 
 class UserDelete(BaseModel):
@@ -45,4 +42,3 @@ class UserDelete(BaseModel):
     # name: str
     # mail: str
     # is_active: bool
-    # is_superuser: bool
