@@ -33,3 +33,21 @@ services:
         source: /mnt/c/Users/Public/GitHub/minutes/api/app
         target: /app
     command: "uvicorn main:app --reload --host 0.0.0.0"
+
+
+  web:
+    # React
+    container_name: "web"
+    image: node:15.14.0-buster-slim
+    ports:
+      - 3000:3000
+    environment:
+      LANG: ja_JP.UTF-8
+      TZ: Asia/Tokyo
+      NODE_ENV: deveropment
+      CHOKIDAR_USEPOLLING: 'true'
+    volumes:
+      - type: bind
+        source: /mnt/c/Users/Public/GitHub/minutes/web/app
+        target: /app
+    command: sh -c "cd /app && yarn start"
