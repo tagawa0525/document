@@ -4,6 +4,7 @@ import { Create, Update, Delete } from '@material-ui/icons';
 import { DataGrid, GridColDef, GridRowSelectedParams } from '@material-ui/data-grid';
 
 import User from './User';
+import axios from '../utils/utils';
 
 class UserPage extends React.Component<{}, {
   list: User[],
@@ -58,21 +59,8 @@ class UserPage extends React.Component<{}, {
     );
   }
 
-  get axios() {
-    const axiosBase = require('axios');
-    return axiosBase.create({
-      baseURL: "http://192.168.1.108:8000",
-      // baseURL: "http://localhost:8000",
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest'
-      },
-      responseType: 'json'
-    });
-  }
-
   componentDidMount() {
-    this.axios.get('/users')
+    axios().get('/users')
       .then((res: { data: User[]; }) => {
         this.setState({
           list: res.data
@@ -133,7 +121,7 @@ class UserPage extends React.Component<{}, {
     e.preventDefault();
     const userJson = JSON.stringify(this.state.input);
 
-    this.axios.post("/users/create", userJson)
+    axios().post("/users/create", userJson)
       .then((res: { data: User; }) => {
         const list = this.state.list.slice();
         list.push(res.data);
@@ -150,7 +138,7 @@ class UserPage extends React.Component<{}, {
   handleUpdate(user: User, e: { preventDefault: () => void; }) {
     e.preventDefault();
     const userJson = JSON.stringify(user);
-    this.axios.post('/users/update', userJson)
+    axios().post('/users/update', userJson)
       .then(() => {
         const list = this.state.list.slice();
         const index = list.findIndex(elem => elem["id"] === user.id);
@@ -169,7 +157,7 @@ class UserPage extends React.Component<{}, {
   handleDelete(user: User, e: { preventDefault: () => void; }) {
     e.preventDefault();
     const userJson = JSON.stringify(user);
-    this.axios.post("/users/delete/", userJson)
+    axios().post("/users/delete/", userJson)
       .then(() => {
         const index = this.state.list.findIndex(elem => elem.id === user.id);
         const list = this.state.list.slice();
