@@ -3,6 +3,7 @@ import { Grid, TextField, Button } from '@material-ui/core';
 import { Create, Update, Delete } from '@material-ui/icons';
 import { DataGrid, GridColDef, GridRowSelectedParams } from '@material-ui/data-grid';
 
+import axios from '../utils/utils';
 import Position from './Position';
 
 class PositionPage extends React.Component<{}, {
@@ -58,21 +59,8 @@ class PositionPage extends React.Component<{}, {
     );
   }
 
-  get axios() {
-    const axiosBase = require('axios');
-    return axiosBase.create({
-      baseURL: "http://192.168.1.108:8000",
-      // baseURL: "http://localhost:8000",
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest'
-      },
-      responseType: 'json'
-    });
-  }
-
   componentDidMount() {
-    this.axios.get('/positions')
+    axios().get('/positions')
       .then((res: { data: Position[]; }) => {
         this.setState({
           list: res.data
@@ -132,7 +120,7 @@ class PositionPage extends React.Component<{}, {
     e.preventDefault();
     const positionJson = JSON.stringify(this.state.input);
 
-    this.axios.post("/positions/create", positionJson)
+    axios().post("/positions/create", positionJson)
       .then((res: { data: Position; }) => {
         const list = this.state.list.slice();
         list.push(res.data);
@@ -149,7 +137,7 @@ class PositionPage extends React.Component<{}, {
   handleUpdate(position: Position, e: { preventDefault: () => void; }) {
     e.preventDefault();
     const positionJson = JSON.stringify(position);
-    this.axios.post('/positions/update', positionJson)
+    axios().post('/positions/update', positionJson)
       .then(() => {
         const list = this.state.list.slice();
         const index = list.findIndex(elem => elem["id"] === position.id);
@@ -168,7 +156,7 @@ class PositionPage extends React.Component<{}, {
   handleDelete(position: Position, e: { preventDefault: () => void; }) {
     e.preventDefault();
     const positionJson = JSON.stringify(position);
-    this.axios.post("/positions/delete/", positionJson)
+    axios().post("/positions/delete/", positionJson)
       .then(() => {
         const index = this.state.list.findIndex(elem => elem.id === position.id);
         const list = this.state.list.slice();
